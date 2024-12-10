@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Results</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .download-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Questionnaire Results
+        <img src="Logo_Verlauf_rgb.png" alt="Icon" style="width: 150px; height: 50px; float: right; vertical-align: middle;margin-right:10px;">
+    </h1>
+    <table id="results-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>30</td>
+                <td>85%</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>25</td>
+                <td>92%</td>
+            </tr>
+            <tr>
+                <td>Sam Wilson</td>
+                <td>27</td>
+                <td>78%</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="download-btn"  id="downloadButton">Download as PDF</button>
+
+    <!-- Include jsPDF and jsPDF AutoTable plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script>
+
+            const DownloadButton=document.getElementById('downloadButton');
+            
+            if (DownloadButton) {
+                DownloadButton.addEventListener('click', () => {
+                    const { jsPDF } = window.jspdf; // Ensure jsPDF is loaded
+
+                    // Create a new jsPDF instance
+                    const doc = new jsPDF();
+                    
+                    doc.text('Result', 14, 15);
+                    doc.addImage("Logo_Verlauf_rgb.png", 'PNG', 70, 8, 40, 12);
+                     
+                    // Grab the table element
+                    const table = document.getElementById('results-table');
+                    // Convert the table to PDF using autoTable
+                    doc.autoTable({
+                        html: table, // Parse the table directly
+                        startY: 70,  // Start drawing from 10px from the top
+                        headStyles: { fillColor: [40, 167, 69] }, // Custom header color
+                    });
+
+                    // Save the PDF with a name
+                    doc.save('results.pdf');
+
+                });
+            }
+
+    </script>
+</body>
+</html>
